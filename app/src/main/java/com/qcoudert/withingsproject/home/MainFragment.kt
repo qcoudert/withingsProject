@@ -1,6 +1,7 @@
 package com.qcoudert.withingsproject.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,6 +41,12 @@ class MainFragment : Fragment() {
                     if (hits.isSuccessful) {
                         binding.firstURLTextView.text =
                             hits.body()?.hits?.get(0)?.largeImageURL ?: "Error"
+                        hits.body()?.hits?.let { pixabayHits ->
+                            Log.d("MainFragment", "Obtained ${pixabayHits.size} hits !")
+                            (activity as? MainActivity)?.switchToDisplayResult(
+                                pixabayHits
+                            )
+                        }
                     }
                 } catch (e: Exception) {
                     binding.firstURLTextView.text = e.message
@@ -47,7 +54,7 @@ class MainFragment : Fragment() {
             }
         }
 
-        binding.queryEditText.doOnTextChanged { text, start, before, count ->
+        binding.queryEditText.doOnTextChanged { text, _, _, _ ->
             viewModel.queryText.postValue(
                 text.toString()
             )
