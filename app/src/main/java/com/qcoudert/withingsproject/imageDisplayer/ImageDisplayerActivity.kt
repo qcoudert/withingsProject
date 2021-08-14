@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.qcoudert.withingsproject.R
 import com.qcoudert.withingsproject.databinding.ImageDisplayerActivityBinding
-import com.qcoudert.withingsproject.home.MainFragment
+import com.squareup.picasso.Picasso
 
 class ImageDisplayerActivity: AppCompatActivity() {
 
@@ -15,6 +15,7 @@ class ImageDisplayerActivity: AppCompatActivity() {
 
     private lateinit var binding: ImageDisplayerActivityBinding
     private lateinit var imageURLS: List<String>
+    private var position = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +25,22 @@ class ImageDisplayerActivity: AppCompatActivity() {
             listOf()
         }
         binding = DataBindingUtil.setContentView(this, R.layout.image_displayer_activity)
+        binding.displayImageView.alpha = 0F
+        fadeIn()
+    }
+
+    fun fadeIn() {
+        Picasso.get().load(imageURLS[position]).into(binding.displayImageView)
+        if (position+1 < imageURLS.size) {
+            position++
+        } else {
+            position = 0
+        }
+        binding.displayImageView.animate().setDuration(2000).alpha(1F).withEndAction(::fadeOut)
+    }
+
+    fun fadeOut() {
+        binding.displayImageView.animate().setDuration(2000).alpha(0F).withEndAction(::fadeIn)
     }
 
 

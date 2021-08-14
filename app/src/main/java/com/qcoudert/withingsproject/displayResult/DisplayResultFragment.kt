@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.qcoudert.withingsproject.R
 import com.qcoudert.withingsproject.databinding.DisplayResultFragmentBinding
+import com.qcoudert.withingsproject.home.MainActivity
 import com.qcoudert.withingsproject.imageDisplayer.ImageDisplayerActivity
 import com.qcoudert.withingsproject.pixabay.PixabayHit
 
@@ -57,12 +58,10 @@ class DisplayResultFragment(private val pixabayHits: List<PixabayHit>) : Fragmen
 
         binding.acceptSelectionButton.setOnClickListener {
             val imageURLs = ArrayList<String>()
-                adapter.selectedItems.entries.forEach {
-                    imageURLs.add(it.value.largeImageURL)
-                }
-            val intent = Intent(context, ImageDisplayerActivity::class.java).apply {
-                putExtra(ImageDisplayerActivity.ARRAY_OF_URLS, imageURLs)
+            adapter.selectedItems.entries.forEach {
+                imageURLs.add(it.value.largeImageURL)
             }
+            (activity as? MainActivity)?.goToImagesDisplay(imageURLs)
         }
     }
 }

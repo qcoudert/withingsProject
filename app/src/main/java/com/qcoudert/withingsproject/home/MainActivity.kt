@@ -1,9 +1,11 @@
 package com.qcoudert.withingsproject.home
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.qcoudert.withingsproject.R
 import com.qcoudert.withingsproject.displayResult.DisplayResultFragment
+import com.qcoudert.withingsproject.imageDisplayer.ImageDisplayerActivity
 import com.qcoudert.withingsproject.pixabay.PixabayHit
 
 class MainActivity : AppCompatActivity() {
@@ -27,11 +29,18 @@ class MainActivity : AppCompatActivity() {
         isShowingListOfImage = true
     }
 
-    fun switchToHome() {
+    private fun switchToHome() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.container, MainFragment.newInstance())
             .commitNow()
         isShowingListOfImage = false
+    }
+
+    fun goToImagesDisplay(imagesURLs: ArrayList<String>) {
+        val intent = Intent(this, ImageDisplayerActivity::class.java).apply {
+            putExtra(ImageDisplayerActivity.ARRAY_OF_URLS, imagesURLs)
+        }
+        startActivity(intent)
     }
 
     override fun onBackPressed() {
